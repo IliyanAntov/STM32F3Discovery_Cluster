@@ -16,6 +16,8 @@ C_SRCS += \
 ../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_pwr_ex.c \
 ../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_rcc.c \
 ../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_rcc_ex.c \
+../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_spi.c \
+../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_spi_ex.c \
 ../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim.c \
 ../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim_ex.c 
 
@@ -32,6 +34,8 @@ OBJS += \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_pwr_ex.o \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_rcc.o \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_rcc_ex.o \
+./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_spi.o \
+./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_spi_ex.o \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim.o \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim_ex.o 
 
@@ -48,6 +52,8 @@ C_DEPS += \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_pwr_ex.d \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_rcc.d \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_rcc_ex.d \
+./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_spi.d \
+./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_spi_ex.d \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim.d \
 ./Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim_ex.d 
 
@@ -57,7 +63,7 @@ Drivers/STM32F3xx_HAL_Driver/Src/%.o: ../Drivers/STM32F3xx_HAL_Driver/Src/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Compiler'
 	@echo $(PWD)
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 '-D__weak=__attribute__((weak))' '-D__packed=__attribute__((__packed__))' -DUSE_HAL_DRIVER -DSTM32F303xC -I"D:/Programs/STM32/Workspace/Test/Test/Inc" -I"D:/Programs/STM32/Workspace/Test/Test/Drivers/STM32F3xx_HAL_Driver/Inc" -I"D:/Programs/STM32/Workspace/Test/Test/Drivers/STM32F3xx_HAL_Driver/Inc/Legacy" -I"D:/Programs/STM32/Workspace/Test/Test/Drivers/CMSIS/Device/ST/STM32F3xx/Include" -I"D:/Programs/STM32/Workspace/Test/Test/Drivers/CMSIS/Include"  -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 '-D__weak=__attribute__((weak))' '-D__packed=__attribute__((__packed__))' -DUSE_HAL_DRIVER -DSTM32F303xC -I"D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc" -I"D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc" -I"D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/Legacy" -I"D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/CMSIS/Device/ST/STM32F3xx/Include" -I"D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/CMSIS/Include"  -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

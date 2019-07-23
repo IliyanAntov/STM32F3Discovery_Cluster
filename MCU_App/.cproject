@@ -19,7 +19,7 @@
 						<toolChain id="fr.ac6.managedbuild.toolchain.gnu.cross.exe.debug.703336730" name="Ac6 STM32 MCU GCC" superClass="fr.ac6.managedbuild.toolchain.gnu.cross.exe.debug">
 							<option id="fr.ac6.managedbuild.option.gnu.cross.prefix.1674620377" name="Prefix" superClass="fr.ac6.managedbuild.option.gnu.cross.prefix" value="arm-none-eabi-" valueType="string"/>
 							<option id="fr.ac6.managedbuild.option.gnu.cross.mcu.45513613" name="Mcu" superClass="fr.ac6.managedbuild.option.gnu.cross.mcu" value="STM32F303VCTx" valueType="string"/>
-							<option id="fr.ac6.managedbuild.option.gnu.cross.board.997689108" name="Board" superClass="fr.ac6.managedbuild.option.gnu.cross.board" value="Test" valueType="string"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.board.997689108" name="Board" superClass="fr.ac6.managedbuild.option.gnu.cross.board" value="App" valueType="string"/>
 							<option id="fr.ac6.managedbuild.option.gnu.cross.core.1083960614" name="Core" superClass="fr.ac6.managedbuild.option.gnu.cross.core" valueType="stringList">
 								<listOptionValue builtIn="false" value="ARM Cortex-M4"/>
 								<listOptionValue builtIn="false" value="CM4"/>
@@ -130,7 +130,7 @@
 						<toolChain id="fr.ac6.managedbuild.toolchain.gnu.cross.exe.release.1898840913" name="Ac6 STM32 MCU GCC" superClass="fr.ac6.managedbuild.toolchain.gnu.cross.exe.release">
 							<option id="fr.ac6.managedbuild.option.gnu.cross.prefix.1674620377" name="Prefix" superClass="fr.ac6.managedbuild.option.gnu.cross.prefix" value="arm-none-eabi-" valueType="string"/>
 							<option id="fr.ac6.managedbuild.option.gnu.cross.mcu.45513613" name="Mcu" superClass="fr.ac6.managedbuild.option.gnu.cross.mcu" value="STM32F303VCTx" valueType="string"/>
-							<option id="fr.ac6.managedbuild.option.gnu.cross.board.997689108" name="Board" superClass="fr.ac6.managedbuild.option.gnu.cross.board" value="Test" valueType="string"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.board.997689108" name="Board" superClass="fr.ac6.managedbuild.option.gnu.cross.board" value="App" valueType="string"/>
 							<option id="fr.ac6.managedbuild.option.gnu.cross.core.1083960614" name="Core" superClass="fr.ac6.managedbuild.option.gnu.cross.core" valueType="stringList">
 								<listOptionValue builtIn="false" value="ARM Cortex-M4"/>
 								<listOptionValue builtIn="false" value="CM4"/>
@@ -235,9 +235,10 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration artifactName="${ProjName}" configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="Test"/>
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="App"/>
 		</configuration>
+		<configuration configurationName="Release"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

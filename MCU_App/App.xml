@@ -9,8 +9,8 @@
 <!ATTLIST board id CDATA #REQUIRED>
 ]>
 <targetDefinitions>
-  <board id="Test">
-    <name>Test</name>
+  <board id="App">
+    <name>App</name>
     <dbgIF>SWD</dbgIF>
     <dbgDEV>ST-Link</dbgDEV>
     <mcuId>stm32f303vctx</mcuId>

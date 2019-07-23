@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "user_main.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,6 +42,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
 
@@ -50,6 +51,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -88,8 +90,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-
+  CANSPI_Initialize();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -99,14 +102,40 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == 0){
 
-	  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, 1);
+	  if(CANSPI_Receive(&rxMessage))
+	      {
+	        txMessage.frame.idType = rxMessage.frame.idType;
+	        txMessage.frame.id = rxMessage.frame.id;
+	        txMessage.frame.dlc = rxMessage.frame.dlc;
+	        txMessage.frame.data0++;
+	        txMessage.frame.data1 = rxMessage.frame.data1;
+	        txMessage.frame.data2 = rxMessage.frame.data2;
+	        txMessage.frame.data3 = rxMessage.frame.data3;
+	        txMessage.frame.data4 = rxMessage.frame.data4;
+	        txMessage.frame.data5 = rxMessage.frame.data5;
+	        txMessage.frame.data6 = rxMessage.frame.data6;
+	        txMessage.frame.data7 = rxMessage.frame.data7;
+	        CANSPI_Transmit(&txMessage);
+	      }
 
-	  }
-	  else{
-	  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, 0);
-	  }
+	      txMessage.frame.idType = dSTANDARD_CAN_MSG_ID_2_0B;
+	      txMessage.frame.id = 0x0A;
+	      txMessage.frame.dlc = 8;
+	      txMessage.frame.data0 = 0;
+	      txMessage.frame.data1 = 1;
+	      txMessage.frame.data2 = 2;
+	      txMessage.frame.data3 = 3;
+	      txMessage.frame.data4 = 4;
+	      txMessage.frame.data5 = 5;
+	      txMessage.frame.data6 = 6;
+	      txMessage.frame.data7 = 7;
+	      CANSPI_Transmit(&txMessage);
+
+	      HAL_Delay(1000);
+
+	    }
+	  //user_main(hspi1);
   }
   /* USER CODE END 3 */
 }
@@ -146,6 +175,46 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief SPI1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI1_Init(void)
+{
+
+  /* USER CODE BEGIN SPI1_Init 0 */
+
+  /* USER CODE END SPI1_Init 0 */
+
+  /* USER CODE BEGIN SPI1_Init 1 */
+
+  /* USER CODE END SPI1_Init 1 */
+  /* SPI1 parameter configuration*/
+  hspi1.Instance = SPI1;
+  hspi1.Init.Mode = SPI_MODE_MASTER;
+  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;
+  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1.Init.CRCPolynomial = 7;
+  hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  if (HAL_SPI_Init(&hspi1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI1_Init 2 */
+
+  /* USER CODE END SPI1_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -159,6 +228,9 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11 
                           |GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
 
@@ -166,6 +238,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = GPIO_PIN_0;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA4 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PE8 PE9 PE10 PE11 
