@@ -40,6 +40,9 @@ namespace Cluster {
             seatbeltBuckled = new BitmapImage(new Uri("C:/seatbelt_buckled.png"));
             seatbeltUnbuckled = new BitmapImage(new Uri("C:/seatbelt_unbuckled.png"));
 
+            RotateTransform rotateTransform = new RotateTransform(-125);
+            speedometer_arrow.RenderTransform = rotateTransform;
+
             // Bind events to buttons & sliders //
             headlightsButton.Click += HeadlightsButtonClicked;
             seatbeltButton.Click += SeatbeltButtonClicked;
@@ -57,6 +60,7 @@ namespace Cluster {
         // Slider value changed event handler //
         private void ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
             ChangeSpeedLabel();
+            RotateArrow((int)speedSlider.Value);
         }
 
         // Headlights button event handler //
@@ -84,6 +88,11 @@ namespace Cluster {
         // Update speed label content //
         private void ChangeSpeedLabel() {
             speedLabel.Content = $"{(int)speedSlider.Value} km/h";
+        }
+
+        private void RotateArrow(int speed) {
+            RotateTransform rotateTransform = new RotateTransform(speed-125);
+            speedometer_arrow.RenderTransform = rotateTransform;
         }
     }
 }

@@ -28,8 +28,10 @@
         </Slider>
 
         <!-- Images -->
-        <Image Name="bulbLeft"  HorizontalAlignment="Left" Height="70" Margin="299,0,0,0" VerticalAlignment="Top" Width="70" Source="C:/2.png"/>
-        <Image x:Name="bulbRight"  HorizontalAlignment="Left" Height="70" Margin="369,0,0,0" VerticalAlignment="Top" Width="70" Source="C:/2.png"/>
-        <Image Name="seatbelt"  HorizontalAlignment="Left" Height="60" Margin="338,86,0,0" VerticalAlignment="Top" Width="54" Source="C:/seatbelt_unbuckled.png"/>
+        <Image Name="bulbLeft"  HorizontalAlignment="Left" Height="70" Margin="338,-6,0,0" VerticalAlignment="Top" Width="70" Source="C:/2.png"/>
+        <Image x:Name="bulbRight"  HorizontalAlignment="Left" Height="70" Margin="408,-6,0,0" VerticalAlignment="Top" Width="70" Source="C:/2.png"/>
+        <Image Name="seatbelt"  HorizontalAlignment="Left" Height="60" Margin="377,80,0,0" VerticalAlignment="Top" Width="54" Source="C:/seatbelt_unbuckled.png"/>
+        <Image Name="speedometer_bg" HorizontalAlignment="Left" Height="168" Margin="322,217,0,0" VerticalAlignment="Top" Width="168" Source="C:/speedometer_bg.png"/>
+        <Image Name="speedometer_arrow" RenderTransformOrigin=".5,.95" HorizontalAlignment="Left" Height="56" Margin="400,261,0,0" VerticalAlignment="Top" Width="56" Source="C:/speedometer_arrow.png"/>
     </Grid>
 </Window>
