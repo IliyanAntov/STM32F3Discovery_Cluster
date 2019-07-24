@@ -1,7 +1,8 @@
 #ifndef __CAN_SPI_H
 #define	__CAN_SPI_H
 
-#include "stm32f3xx_hal_conf.h"
+#include "stm32f3xx_hal.h"
+#include "stm32f3xx_hal_gpio.h"
 
 typedef union {
   struct {

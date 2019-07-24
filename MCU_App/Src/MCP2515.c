@@ -1,11 +1,12 @@
 #include "MCP2515.h"
+#include "CANSPI.h"
 
 /* Pin . Modify below items for your SPI configurations */
 extern SPI_HandleTypeDef        hspi1;
 #define SPI_CAN                 &hspi1
 #define SPI_TIMEOUT             10
-#define MCP2515_CS_HIGH()   HAL_GPIO_WritePin(CAN_CS_GPIO_Port, CAN_CS_Pin, GPIO_PIN_SET)
-#define MCP2515_CS_LOW()    HAL_GPIO_WritePin(CAN_CS_GPIO_Port, CAN_CS_Pin, GPIO_PIN_RESET)
+#define MCP2515_CS_HIGH()   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, 1)
+#define MCP2515_CS_LOW()    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, 0)
 
 /* Prototypes */
 static void SPI_Tx(uint8_t data);
@@ -14,7 +15,7 @@ static uint8_t SPI_Rx(void);
 static void SPI_RxBuffer(uint8_t *buffer, uint8_t length);
 
 /* MCP2515*/
-bool MCP2515_Initialize(void)
+int MCP2515_Initialize(void)
 {
   MCP2515_CS_HIGH();
 
@@ -23,34 +24,36 @@ bool MCP2515_Initialize(void)
   do {
     /* SPI Ready*/
     if(HAL_SPI_GetState(SPI_CAN) == HAL_SPI_STATE_READY)
-      return true;
+      return 1;
 
     loop--;
   } while(loop > 0);
 
-  return false;
+  return 0;
 }
 
 /* MCP2515*/
-bool MCP2515_SetConfigMode(void)
+int MCP2515_SetConfigMode(void)
 {
   /* CANCTRL Register Configuration */
   MCP2515_WriteByte(MCP2515_CANCTRL, 0x80);
 
-  uint8_t loop = 10;
+  uint8_t loop = 100;
 
   do {
     if((MCP2515_ReadByte(MCP2515_CANSTAT) & 0xE0) == 0x80)
-      return true;
+      return 1;
+
+    HAL_Delay(10);
 
     loop--;
   } while(loop > 0);
 
-  return false;
+  return 0;
 }
 
 /* MCP2515  Normal */
-bool MCP2515_SetNormalMode(void)
+int MCP2515_SetNormalMode(void)
 {
   /* CANCTRL Register Normal */
   MCP2515_WriteByte(MCP2515_CANCTRL, 0x00);
@@ -59,16 +62,16 @@ bool MCP2515_SetNormalMode(void)
 
   do {
     if((MCP2515_ReadByte(MCP2515_CANSTAT) & 0xE0) == 0x00)
-      return true;
+      return 1;
 
     loop--;
   } while(loop > 0);
 
-  return false;
+  return 0;
 }
 
 /* MCP2515 Sleep */
-bool MCP2515_SetSleepMode(void)
+int MCP2515_SetSleepMode(void)
 {
   /* CANCTRL Register Sleep */
   MCP2515_WriteByte(MCP2515_CANCTRL, 0x20);
@@ -77,12 +80,12 @@ bool MCP2515_SetSleepMode(void)
 
   do {
     if((MCP2515_ReadByte(MCP2515_CANSTAT) & 0xE0) == 0x20)
-      return true;
+      return 1;
 
     loop--;
   } while(loop > 0);
 
-  return false;
+  return 0;
 }
 
 /* MCP2515 SPI-Reset */
@@ -125,9 +128,13 @@ void MCP2515_WriteByte(uint8_t address, uint8_t data)
 {
   MCP2515_CS_LOW();
 
+  HAL_Delay(1);
+
   SPI_Tx(MCP2515_WRITE);
   SPI_Tx(address);
   SPI_Tx(data);
+
+  HAL_Delay(1);
 
   MCP2515_CS_HIGH();
 }
@@ -171,11 +178,14 @@ void MCP2515_LoadTxBuffer(uint8_t instruction, uint8_t data)
 /* RTS TxBuffer */
 void MCP2515_RequestToSend(uint8_t instruction)
 {
-  MCP2515_CS_LOW();
+	HAL_Delay(10);
+	MCP2515_CS_LOW();
+	HAL_Delay(10);
+	HAL_Delay(10);
+	SPI_Tx(instruction);
 
-  SPI_Tx(instruction);
-
-  MCP2515_CS_HIGH();
+	HAL_Delay(10);
+	MCP2515_CS_HIGH();
 }
 
 /* MCP2515 Status */

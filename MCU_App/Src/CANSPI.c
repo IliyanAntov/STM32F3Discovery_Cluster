@@ -25,7 +25,7 @@ void CANSPI_Sleep(void)
   MCP2515_SetSleepMode();
 }
 
-/* CAN */
+/* CAN  */
 int CANSPI_Initialize(void)
 {
   RXF0 RXF0reg;
@@ -37,7 +37,7 @@ int CANSPI_Initialize(void)
   RXM0 RXM0reg;
   RXM1 RXM1reg;
 
-  /* Rx Mask values */
+  /* Rx Mask values  */
   RXM0reg.RXM0SIDH = 0x00;
   RXM0reg.RXM0SIDL = 0x00;
   RXM0reg.RXM0EID8 = 0x00;
@@ -79,15 +79,15 @@ int CANSPI_Initialize(void)
   RXF5reg.RXF5EID8 = 0x00;
   RXF5reg.RXF5EID0 = 0x00;
 
-  /* MCP2515 , SPI  */
+  /* MCP2515, SPI */
   if(!MCP2515_Initialize())
     return 0;
 
-  /* Configuration*/
+  /* Configuration */
   if(!MCP2515_SetConfigMode())
     return 0;
 
-  /* Filter & Mask*/
+  /* Filter & Mask  */
   MCP2515_WriteByteSequence(MCP2515_RXM0SIDH, MCP2515_RXM0EID0, &(RXM0reg.RXM0SIDH));
   MCP2515_WriteByteSequence(MCP2515_RXM1SIDH, MCP2515_RXM1EID0, &(RXM1reg.RXM1SIDH));
   MCP2515_WriteByteSequence(MCP2515_RXF0SIDH, MCP2515_RXF0EID0, &(RXF0reg.RXF0SIDH));
@@ -112,10 +112,10 @@ int CANSPI_Initialize(void)
   MCP2515_WriteByte(MCP2515_CNF1, 0x00);
 
   /* 1 1 100(5tq) 101(6tq) */
-  MCP2515_WriteByte(MCP2515_CNF2, 0xE5);
+  MCP2515_WriteByte(MCP2515_CNF2, 0xD1);
 
   /* 1 0 000 011(4tq) */
-  MCP2515_WriteByte(MCP2515_CNF3, 0x83);
+  MCP2515_WriteByte(MCP2515_CNF3, 0x81);
 
   /* Normal */
   if(!MCP2515_SetNormalMode())
@@ -136,10 +136,10 @@ uint8_t CANSPI_Transmit(uCAN_MSG *tempCanMsg)
 
   ctrlStatus.ctrl_status = MCP2515_ReadStatus();
 
-  /* Transmission Pending. */
+  /* Transmission Pending */
   if (ctrlStatus.TXB0REQ != 1)
   {
-    /* ID Type*/
+    /* ID Type */
     convertCANid2Reg(tempCanMsg->frame.id, tempCanMsg->frame.idType, &idReg);
 
     /* Tx Buffer Loading */
@@ -172,7 +172,7 @@ uint8_t CANSPI_Transmit(uCAN_MSG *tempCanMsg)
   return (returnValue);
 }
 
-/* CAN*/
+/* CAN */
 uint8_t CANSPI_Receive(uCAN_MSG *tempCanMsg)
 {
   uint8_t returnValue = 0;
@@ -181,10 +181,10 @@ uint8_t CANSPI_Receive(uCAN_MSG *tempCanMsg)
 
   rxStatus.ctrl_rx_status = MCP2515_GetRxStatus();
 
-  /* */
+
   if (rxStatus.rxBuffer != 0)
   {
-    /*  */
+
     if ((rxStatus.rxBuffer == MSG_IN_RXB0)|(rxStatus.rxBuffer == MSG_IN_BOTH_BUFFERS))
     {
       MCP2515_ReadRxSequence(MCP2515_READ_RXB0SIDH, rxReg.rx_reg_array, sizeof(rxReg.rx_reg_array));
@@ -194,7 +194,7 @@ uint8_t CANSPI_Receive(uCAN_MSG *tempCanMsg)
       MCP2515_ReadRxSequence(MCP2515_READ_RXB1SIDH, rxReg.rx_reg_array, sizeof(rxReg.rx_reg_array));
     }
 
-    /* Extended  */
+    /* Extended */
     if (rxStatus.msgType == dEXTENDED_CAN_MSG_ID_2_0B)
     {
       tempCanMsg->frame.idType = (uint8_t) dEXTENDED_CAN_MSG_ID_2_0B;
@@ -242,6 +242,7 @@ uint8_t CANSPI_messagesInBuffer(void)
   return (messageCount);
 }
 
+/* CAN BUS Offline */
 uint8_t CANSPI_isBussOff(void)
 {
   uint8_t returnValue = 0;
@@ -256,6 +257,7 @@ uint8_t CANSPI_isBussOff(void)
   return (returnValue);
 }
 
+/* Rx Passive Error */
 uint8_t CANSPI_isRxErrorPassive(void)
 {
   uint8_t returnValue = 0;
@@ -270,6 +272,7 @@ uint8_t CANSPI_isRxErrorPassive(void)
   return (returnValue);
 }
 
+/* Tx Passive Error */
 uint8_t CANSPI_isTxErrorPassive(void)
 {
   uint8_t returnValue = 0;
@@ -284,6 +287,7 @@ uint8_t CANSPI_isTxErrorPassive(void)
   return (returnValue);
 }
 
+/* Register Extended ID */
 static uint32_t convertReg2ExtendedCANid(uint8_t tempRXBn_EIDH, uint8_t tempRXBn_EIDL, uint8_t tempRXBn_SIDH, uint8_t tempRXBn_SIDL)
 {
   uint32_t returnValue = 0;
@@ -305,6 +309,7 @@ static uint32_t convertReg2ExtendedCANid(uint8_t tempRXBn_EIDH, uint8_t tempRXBn
   return (returnValue);
 }
 
+/* Register Standard ID */
 static uint32_t convertReg2StandardCANid(uint8_t tempRXBn_SIDH, uint8_t tempRXBn_SIDL)
 {
   uint32_t returnValue = 0;
@@ -317,6 +322,7 @@ static uint32_t convertReg2StandardCANid(uint8_t tempRXBn_SIDH, uint8_t tempRXBn
   return (returnValue);
 }
 
+/* CAN ID Register */
 static void convertCANid2Reg(uint32_t tempPassedInID, uint8_t canIdType, id_reg_t *passedIdReg)
 {
   uint8_t wipSIDL = 0;

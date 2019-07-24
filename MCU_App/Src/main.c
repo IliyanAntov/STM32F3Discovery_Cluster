@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "user_main.h"
+#include "stm32f3xx_hal.h"
+#include "CANSPI.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +47,8 @@
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
-
+uCAN_MSG txMessage;
+uCAN_MSG rxMessage;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -103,10 +106,12 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
+
 	  if(CANSPI_Receive(&rxMessage))
 	      {
+		  	  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, (GPIO_PinState)1);
 	        txMessage.frame.idType = rxMessage.frame.idType;
-	        txMessage.frame.id = rxMessage.frame.id;
+	        txMessage.frame.id = rxMessage.frame.id+1;
 	        txMessage.frame.dlc = rxMessage.frame.dlc;
 	        txMessage.frame.data0++;
 	        txMessage.frame.data1 = rxMessage.frame.data1;
@@ -117,12 +122,18 @@ int main(void)
 	        txMessage.frame.data6 = rxMessage.frame.data6;
 	        txMessage.frame.data7 = rxMessage.frame.data7;
 	        CANSPI_Transmit(&txMessage);
+	        if(txMessage.frame.data1 == 13){
+	        	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_12, (GPIO_PinState)1);
+	        }
+	        HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, (GPIO_PinState)0);
 	      }
-
+	  	  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == 1)
+	  	  {
+	  		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, (GPIO_PinState)1);
 	      txMessage.frame.idType = dSTANDARD_CAN_MSG_ID_2_0B;
 	      txMessage.frame.id = 0x0A;
 	      txMessage.frame.dlc = 8;
-	      txMessage.frame.data0 = 0;
+	      txMessage.frame.data0 = 43;
 	      txMessage.frame.data1 = 1;
 	      txMessage.frame.data2 = 2;
 	      txMessage.frame.data3 = 3;
@@ -130,11 +141,17 @@ int main(void)
 	      txMessage.frame.data5 = 5;
 	      txMessage.frame.data6 = 6;
 	      txMessage.frame.data7 = 7;
+
 	      CANSPI_Transmit(&txMessage);
 
 	      HAL_Delay(1000);
+	  	  }
+	  	  else{
+	  		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, (GPIO_PinState)0);
+	  	  }
 
-	    }
+
+
 	  //user_main(hspi1);
   }
   /* USER CODE END 3 */
@@ -193,7 +210,7 @@ static void MX_SPI1_Init(void)
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi1.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;

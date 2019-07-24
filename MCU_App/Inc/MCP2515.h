@@ -2,7 +2,7 @@
 #define	__MCP2515_H
 
 #pragma anon_unions
-#include "stm32f3xx_hal_conf.h"
+#include "stm32f3xx_hal.h"
 
 /* MCP2515 SPI Instruction Set */
 #define MCP2515_RESET           0xC0
