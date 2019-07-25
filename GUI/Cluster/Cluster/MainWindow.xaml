@@ -10,13 +10,18 @@
     <Grid>
         <!-- Buttons -->
         <Button x:Name="headlightsButton" Content="Headlights: Off" Margin="10,10,641,364" FontSize="18"></Button>
-        <Button x:Name="seatbeltButton" Content="Seatbelt: Unbuckled" Margin="10,80,641,268" FontSize="18"></Button>
-
+        <Button x:Name="seatbeltButton" Content="Seatbelt: Unbuckled" Margin="10,69,641,279" FontSize="18"></Button>
+        <Button Name="turnLeftButton" Content="Turn Left" Margin="10,155,714,213"></Button>
+        <Button Name="turnRightButton" Content="Turn Right" Margin="83,155,641,213"></Button>
+        <Button x:Name="batteryLevelButton" Content="Battery Level" Margin="10,221,644,153" FontSize="18"></Button>
+        <Button x:Name="engineTemperatureButton" Content="Engine Temp" HorizontalContentAlignment="Center" Margin="10,281,644,93" FontSize="18"></Button>
+        <Button x:Name="fuelLevelButton" Content="Fuel Level" Margin="10,341,644,33" FontSize="18"></Button>
+        
         <!-- Labels -->
-        <Label Name="speedLabel"  Content="0 km/h" FontSize="18" Margin="619,368,55,10" RenderTransformOrigin="0.5,0.5"/>
+        <Label Name="speedLabel"  Content="0 km/h" FontSize="18" Margin="662,364,12,11" RenderTransformOrigin="0.5,0.5"/>
 
         <!-- Sliders -->
-        <Slider x:Name="speedSlider" Minimum="0" Maximum="250" Value="0" Margin="179,366,179,18" RenderTransformOrigin="0.5,0.5">
+        <Slider x:Name="speedSlider" Minimum="0" Maximum="250" Value="0" Margin="231,366,127,18" RenderTransformOrigin="0.5,0.5">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="-1"/>
@@ -28,10 +33,23 @@
         </Slider>
 
         <!-- Images -->
-        <Image Name="bulbLeft"  HorizontalAlignment="Left" Height="70" Margin="338,-6,0,0" VerticalAlignment="Top" Width="70" Source="C:/2.png"/>
-        <Image x:Name="bulbRight"  HorizontalAlignment="Left" Height="70" Margin="408,-6,0,0" VerticalAlignment="Top" Width="70" Source="C:/2.png"/>
-        <Image Name="seatbelt"  HorizontalAlignment="Left" Height="60" Margin="377,80,0,0" VerticalAlignment="Top" Width="54" Source="C:/seatbelt_unbuckled.png"/>
-        <Image Name="speedometer_bg" HorizontalAlignment="Left" Height="168" Margin="322,217,0,0" VerticalAlignment="Top" Width="168" Source="C:/speedometer_bg.png"/>
-        <Image Name="speedometer_arrow" RenderTransformOrigin=".5,.95" HorizontalAlignment="Left" Height="56" Margin="400,261,0,0" VerticalAlignment="Top" Width="56" Source="C:/speedometer_arrow.png"/>
+        <Image Name="bulbLeft"  HorizontalAlignment="Left" Height="42" Margin="444,261,0,0" VerticalAlignment="Top" Width="42" Source="C:/Resources/2.png"/>
+        <Image Name="seatbelt"  HorizontalAlignment="Left" Height="30" Margin="414,266,0,0" VerticalAlignment="Top" Width="28" Source="C:/Resources/seatbelt_unbuckled.png"/>
+        <Image Name="speedometer_bg" HorizontalAlignment="Left" Height="356" Margin="267,12,0,0" VerticalAlignment="Top" Width="356" Source="C:/Resources/speedometer_bg.png"/>
+        <Image Name="speedometer_arrow" RenderTransformOrigin=".5,.95" HorizontalAlignment="Left" Height="119" Margin="432,105,0,0" VerticalAlignment="Top" Width="119" Source="C:/Resources/speedometer_arrow.png"/>
+        <Image Name="blinkLeft" HorizontalAlignment="Left" Height="36" Margin="304,332,0,0" VerticalAlignment="Top" Width="38" Source="C:/Resources/turn_light_left.png"/>
+        <Image Name="blinkRight" HorizontalAlignment="Left" Height="36" Margin="551,333,0,0" VerticalAlignment="Top" Width="34" Source="C:/Resources/turn_light_right.png" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Name="batteryLevel" HorizontalAlignment="Left" Height="36" Margin="380,310,0,0" VerticalAlignment="Top" Width="37" Source="C:/Resources/battery_level.png"/>
+        <Image Name="engineTemperature" HorizontalAlignment="Left" Height="36" Margin="427,304,0,0" VerticalAlignment="Top" Width="36" Source="C:/Resources/engine_temp.png"/>
+        <Image x:Name="fuelLevel" HorizontalAlignment="Left" Height="32" Margin="477,307,0,0" VerticalAlignment="Top" Width="32" Source="C:/Resources/fuel_level.png"/>
     </Grid>
 </Window>
