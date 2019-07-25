@@ -8,20 +8,24 @@
         Title="MainWindow" Height="450" Width="800"
         Background="#333333">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="757*"/>
+            <ColumnDefinition Width="35*"/>
+        </Grid.ColumnDefinitions>
         <!-- Buttons -->
-        <Button x:Name="headlightsButton" Content="Headlights: Off" Margin="10,10,641,364" FontSize="18"></Button>
-        <Button x:Name="seatbeltButton" Content="Seatbelt: Unbuckled" Margin="10,69,641,279" FontSize="18"></Button>
-        <Button Name="turnLeftButton" Content="Turn Left" Margin="10,155,714,213"></Button>
-        <Button Name="turnRightButton" Content="Turn Right" Margin="83,155,641,213"></Button>
-        <Button x:Name="batteryLevelButton" Content="Battery Level" Margin="10,221,644,153" FontSize="18"></Button>
-        <Button x:Name="engineTemperatureButton" Content="Engine Temp" HorizontalContentAlignment="Center" Margin="10,281,644,93" FontSize="18"></Button>
-        <Button x:Name="fuelLevelButton" Content="Fuel Level" Margin="10,341,644,33" FontSize="18"></Button>
-        
+        <Button x:Name="headlightsButton" Content="Headlights: Off" Margin="10,10,606,364" FontSize="18"></Button>
+        <Button x:Name="seatbeltButton" Content=" Seatbelt:&#x0a;Unbuckled" HorizontalContentAlignment="Center" Margin="10,69,606,279" FontSize="18"></Button>
+        <Button Name="turnLeftButton" Content="Turn Left" Margin="10,155,679,213"></Button>
+        <Button Name="turnRightButton" Content="Turn Right" Margin="83,155,606,213"></Button>
+        <Button x:Name="batteryLevelButton" Content="Battery Level" Margin="10,221,609,153" FontSize="18"></Button>
+        <Button x:Name="engineTemperatureButton" Content="Engine Temp" HorizontalContentAlignment="Center" Margin="10,281,609,93" FontSize="18"></Button>
+        <Button x:Name="fuelLevelButton" Content="Fuel Level" Margin="10,341,609,33" FontSize="18"></Button>
+
         <!-- Labels -->
-        <Label Name="speedLabel"  Content="0 km/h" FontSize="18" Margin="662,364,12,11" RenderTransformOrigin="0.5,0.5"/>
+        <Label Name="speedLabel"  Content="0 km/h" FontSize="18" Margin="662,364,12,11" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2"/>
 
         <!-- Sliders -->
-        <Slider x:Name="speedSlider" Minimum="0" Maximum="250" Value="0" Margin="231,366,127,18" RenderTransformOrigin="0.5,0.5">
+        <Slider x:Name="speedSlider" Minimum="0" Maximum="250" Value="0" Margin="231,366,92,18" RenderTransformOrigin="0.5,0.5">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="-1"/>
@@ -48,7 +52,7 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        <Image Name="batteryLevel" HorizontalAlignment="Left" Height="36" Margin="380,310,0,0" VerticalAlignment="Top" Width="37" Source="C:/Resources/battery_level.png"/>
+        <Image Name="batteryLevel" HorizontalAlignment="Left" Height="36" Margin="380,310,0,0" VerticalAlignment="Top" Width="37" Source="Resources/battery_level.png"/>
         <Image Name="engineTemperature" HorizontalAlignment="Left" Height="36" Margin="427,304,0,0" VerticalAlignment="Top" Width="36" Source="C:/Resources/engine_temp.png"/>
         <Image x:Name="fuelLevel" HorizontalAlignment="Left" Height="32" Margin="477,307,0,0" VerticalAlignment="Top" Width="32" Source="C:/Resources/fuel_level.png"/>
     </Grid>

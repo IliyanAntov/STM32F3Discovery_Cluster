@@ -1,19 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Cluster {
     /// <summary>
@@ -21,6 +10,7 @@ namespace Cluster {
     /// </summary>
     public partial class MainWindow : Window {
         // Global variables //
+        private string resourcePath = "C:/Resources/";
         private int startAngle = -125; // start angle of the speedometer arrow
         private const int blinkDelay = 1000; // time interval between each blink of the blinkers
 
@@ -28,6 +18,9 @@ namespace Cluster {
         private bool headlightsState = false; // headlights state - on/off
         private bool seatbeltState = false; // seatbelt state - buckled/unbuckled
         private int currentBlinker = -1; // which blinkers are working currently: 0 -> left, 1 -> right, -1 -> none
+        private bool batteryLevelState = false; // battery level state - normal/warning
+        private bool engineTempState = false; // engine temp state - normal/warning
+        private bool fuelLevelState = false; // fuel level state - normal/warning
 
         // Global icon images //
         private BitmapImage headlightsOn; // headlights turned on
@@ -38,6 +31,12 @@ namespace Cluster {
         private BitmapImage turnLightLeftGreen; // left blinker on
         private BitmapImage turnLightRight; // right blinker off
         private BitmapImage turnLightRightGreen; // left blinker on
+        private BitmapImage batteryLevelNormal; // battery level normal
+        private BitmapImage batteryLevelWarning; // battery level warning
+        private BitmapImage engineTemperatureNormal; // engine temperature normal
+        private BitmapImage engineTemperatureWarning; // engine temperature warning
+        private BitmapImage fuelLevelNormal; // fuel level normal
+        private BitmapImage fuelLevelWarning; // fuel level warning
 
         Thread blink;
 
@@ -46,14 +45,20 @@ namespace Cluster {
             window.ResizeMode = ResizeMode.NoResize; // Remove resize of the window 
 
             // Initialize images for the UI //
-            headlightsOn = new BitmapImage(new Uri("C:/Resources/1.png"));
-            headligtsOff = new BitmapImage(new Uri("C:/Resources/2.png"));
-            seatbeltBuckled = new BitmapImage(new Uri("C:/Resources/seatbelt_buckled.png"));
-            seatbeltUnbuckled = new BitmapImage(new Uri("C:/Resources/seatbelt_unbuckled.png"));
-            turnLightLeft = new BitmapImage(new Uri("C:/Resources/turn_light_left.png"));
-            turnLightLeftGreen = new BitmapImage(new Uri("C:/Resources/turn_light_left_green.png"));
-            turnLightRight = new BitmapImage(new Uri("C:/Resources/turn_light_right.png"));
-            turnLightRightGreen = new BitmapImage(new Uri("C:/Resources/turn_light_right_green.png"));
+            headlightsOn = new BitmapImage(new Uri(resourcePath + "1.png"));
+            headligtsOff = new BitmapImage(new Uri(resourcePath + "2.png"));
+            seatbeltBuckled = new BitmapImage(new Uri(resourcePath + "seatbelt_buckled.png"));
+            seatbeltUnbuckled = new BitmapImage(new Uri(resourcePath + "seatbelt_unbuckled.png"));
+            turnLightLeft = new BitmapImage(new Uri(resourcePath + "turn_light_left.png"));
+            turnLightLeftGreen = new BitmapImage(new Uri(resourcePath + "turn_light_left_green.png"));
+            turnLightRight = new BitmapImage(new Uri(resourcePath + "turn_light_right.png"));
+            turnLightRightGreen = new BitmapImage(new Uri(resourcePath + "turn_light_right_green.png"));
+            batteryLevelNormal = new BitmapImage(new Uri(resourcePath + "battery_level.png"));
+            batteryLevelWarning = new BitmapImage(new Uri(resourcePath + "battery_level_red.png"));
+            engineTemperatureNormal = new BitmapImage(new Uri(resourcePath + "engine_temp.png"));
+            engineTemperatureWarning = new BitmapImage(new Uri(resourcePath + "engine_temp_red.png"));
+            fuelLevelNormal = new BitmapImage(new Uri(resourcePath + "fuel_level.png"));
+            fuelLevelWarning = new BitmapImage(new Uri(resourcePath + "fuel_level_red.png"));
 
             // Set speedometer arrow position intially //
             RotateTransform rotateTransform = new RotateTransform(startAngle);
@@ -65,14 +70,32 @@ namespace Cluster {
             speedSlider.ValueChanged += ValueChanged;
             turnLeftButton.Click += TurnLeftClicked;
             turnRightButton.Click += TurnRightClicked;
+            batteryLevelButton.Click += BatteryLevelClicked;
+            engineTemperatureButton.Click += EngineTemperatureClicked;
+            fuelLevelButton.Click += FuelLevelClicked;
             window.Closed += WindowClosed;
-
-            // Initialize component content //
-            seatbeltButton.Content = " Seatbelt:\nUnbuckled";
 
             // Initialize thread for blinkers //
             blink = new Thread(CheckBlink);
             blink.Start();
+        }
+
+        // Fuel level button clicked event handler //
+        private void FuelLevelClicked(object sender, RoutedEventArgs e) {
+            fuelLevelState = !fuelLevelState;
+            fuelLevel.Source = (!fuelLevelState) ? fuelLevelNormal : fuelLevelWarning;
+        }
+
+        // Engine temperature button clicked event handler //
+        private void EngineTemperatureClicked(object sender, RoutedEventArgs e) {
+            engineTempState = !engineTempState;
+            engineTemperature.Source = (!engineTempState) ? engineTemperatureNormal : engineTemperatureWarning;
+        }
+
+        // Battery level clicked event handler //
+        private void BatteryLevelClicked(object sender, RoutedEventArgs e) {
+            batteryLevelState = !batteryLevelState;
+            batteryLevel.Source = (!batteryLevelState) ? batteryLevelNormal : batteryLevelWarning;
         }
 
         // Window closed event handler //
@@ -85,7 +108,7 @@ namespace Cluster {
             if (currentBlinker == -1 || currentBlinker == 1) { // Check if currently the right or none are working
                 currentBlinker = 0; // set the current blinker to left
             } else {
-                currentBlinker = -1; /// set the current blinker to none
+                currentBlinker = -1; // set the current blinker to none
             }
         }
 
@@ -141,7 +164,7 @@ namespace Cluster {
 
         // Blink thread's job //
         private void CheckBlink() {
-            while (true) {                
+            while (true) {
                 this.Dispatcher.Invoke(() => {
                     if (currentBlinker == 0) {
                         blinkLeft.Source = turnLightLeftGreen;
@@ -154,7 +177,7 @@ namespace Cluster {
                         blinkRight.Source = turnLightRight;
                     }
                 });
-                
+
                 Thread.Sleep(blinkDelay);
 
                 this.Dispatcher.Invoke(() => {
