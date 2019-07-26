@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
@@ -10,7 +11,7 @@ namespace Cluster {
     /// </summary>
     public partial class MainWindow : Window {
         // Global variables //
-        private string resourcePath = "C:/Resources/";
+        private const string resourcePath = "pack://application:,,,/Resources/";
         private int startAngle = -125; // start angle of the speedometer arrow
         private const int blinkDelay = 1000; // time interval between each blink of the blinkers
 
@@ -38,11 +39,14 @@ namespace Cluster {
         private BitmapImage fuelLevelNormal; // fuel level normal
         private BitmapImage fuelLevelWarning; // fuel level warning
 
+        // Blink lights thread //
         Thread blink;
 
         public MainWindow() {
             InitializeComponent();
-            window.ResizeMode = ResizeMode.NoResize; // Remove resize of the window 
+            this.DataContext = this;
+
+            window.ResizeMode = ResizeMode.NoResize; // Remove resize of the window
 
             // Initialize images for the UI //
             headlightsOn = new BitmapImage(new Uri(resourcePath + "1.png"));
@@ -123,37 +127,22 @@ namespace Cluster {
 
         // Seatbet button event handler //
         private void SeatbeltButtonClicked(object sender, RoutedEventArgs e) {
-            ChangeSeatbeltState();
-        }
-
-        // Slider value changed event handler //
-        private void ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            ChangeSpeedLabel();
-            RotateArrow((int)speedSlider.Value);
-        }
-
-        // Headlights button event handler //
-        private void HeadlightsButtonClicked(object sender, RoutedEventArgs e) {
-            ChangeHeadLightsState();
-        }
-
-        // Updates seatbelt icon //
-        private void ChangeSeatbeltState() {
             seatbelt.Source = (seatbeltState) ? seatbeltUnbuckled : seatbeltBuckled;
             seatbeltButton.Content = (seatbeltState) ? " Seatbelt:\nUnbuckled" : "Seatbelt:\n Buckled";
             seatbeltState = !seatbeltState;
         }
 
-        // Updates headlights icons // 
-        private void ChangeHeadLightsState() {
+        // Slider value changed event handler //
+        private void ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+            speedLabel.Content = $"{(int)speedSlider.Value} km/h";
+            RotateArrow((int)speedSlider.Value);
+        }
+
+        // Headlights button event handler //
+        private void HeadlightsButtonClicked(object sender, RoutedEventArgs e) {
             bulbLeft.Source = (headlightsState) ? headligtsOff : headlightsOn;
             headlightsState = !headlightsState;
             headlightsButton.Content = (headlightsState) ? "Headlights: On" : "Headlights: Off";
-        }
-
-        // Update speed label content //
-        private void ChangeSpeedLabel() {
-            speedLabel.Content = $"{(int)speedSlider.Value} km/h";
         }
 
         // Rotates speedometer dial by a certain degree //

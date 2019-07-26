@@ -40,6 +40,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -97,8 +98,69 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Content Include="Resources\1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\battery_level.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\battery_level_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\engine_check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\engine_check_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\engine_temp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\engine_temp_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\fuel_level.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\fuel_level_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\horn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\horn_yellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\seatbelt_buckled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\seatbelt_unbuckled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\speedometer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\speedometer_arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\speedometer_bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\turn_light_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\turn_light_left_green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\turn_light_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\turn_light_right_green.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
