@@ -178,13 +178,13 @@ void MCP2515_LoadTxBuffer(uint8_t instruction, uint8_t data)
 /* RTS TxBuffer */
 void MCP2515_RequestToSend(uint8_t instruction)
 {
-	HAL_Delay(10);
+	HAL_Delay(1);
 	MCP2515_CS_LOW();
-	HAL_Delay(10);
-	HAL_Delay(10);
+
+	HAL_Delay(1);
 	SPI_Tx(instruction);
 
-	HAL_Delay(10);
+	HAL_Delay(1);
 	MCP2515_CS_HIGH();
 }
 

@@ -24,7 +24,9 @@ Src/system_stm32f3xx.o: ../Src/system_stm32f3xx.c \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_pwr.h \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_pwr_ex.h \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi.h \
- D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi_ex.h
+ D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi_ex.h \
+ D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_tim.h \
+ D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_tim_ex.h
 
 D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f3xx.h:
 
@@ -77,3 +79,7 @@ D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_H
 D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi.h:
 
 D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi_ex.h:
+
+D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_tim.h:
+
+D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_tim_ex.h:
