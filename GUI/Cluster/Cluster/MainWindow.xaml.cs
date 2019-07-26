@@ -14,6 +14,8 @@ namespace Cluster {
         private const string resourcePath = "pack://application:,,,/Resources/";
         private int startAngle = -125; // start angle of the speedometer arrow
         private const int blinkDelay = 1000; // time interval between each blink of the blinkers
+        private uint mask = 0;
+        private int speed = 0;
 
         // Global state variables //
         private bool headlightsState = false; // headlights state - on/off
@@ -22,6 +24,7 @@ namespace Cluster {
         private bool batteryLevelState = false; // battery level state - normal/warning
         private bool engineTempState = false; // engine temp state - normal/warning
         private bool fuelLevelState = false; // fuel level state - normal/warning
+        private uint blinkerState = 0;
 
         // Global icon images //
         private BitmapImage headlightsOn; // headlights turned on
@@ -42,9 +45,10 @@ namespace Cluster {
         // Blink lights thread //
         Thread blink;
 
+        CANManager can_manager;
+
         public MainWindow() {
             InitializeComponent();
-            this.DataContext = this;
 
             window.ResizeMode = ResizeMode.NoResize; // Remove resize of the window
 
@@ -82,24 +86,73 @@ namespace Cluster {
             // Initialize thread for blinkers //
             blink = new Thread(CheckBlink);
             blink.Start();
+
+            can_manager = new CANManager(30);
+
+            System.Timers.Timer timer = new System.Timers.Timer(2);
+            timer.Elapsed += CANManager.TimerHandler;
+            timer.AutoReset = true;
+            timer.Enabled = true;
         }
 
         // Fuel level button clicked event handler //
         private void FuelLevelClicked(object sender, RoutedEventArgs e) {
             fuelLevelState = !fuelLevelState;
             fuelLevel.Source = (!fuelLevelState) ? fuelLevelNormal : fuelLevelWarning;
+            CalculateMaskAndSpeed();
+        }
+
+        private void CalculateMaskAndSpeed()
+        {
+            mask = 0;
+            speed = (int)speedSlider.Value;
+
+            if(currentBlinker == 0)
+            {
+                mask = mask | blinkerState;
+                mask = mask << 1;
+                mask = mask | 0;
+            }
+
+            if (currentBlinker == 1)
+            {
+                mask = mask | 0;
+                mask = mask << 1;
+                mask = mask | blinkerState;
+            }
+
+            mask = mask << 1;
+            mask = mask | Convert.ToUInt32(engineTempState);
+
+            mask = mask << 1;
+            mask = mask | Convert.ToUInt32(batteryLevelState);
+
+            mask = mask << 1;
+            mask = mask | Convert.ToUInt32(headlightsState);
+
+            mask = mask << 1;
+            mask = mask | Convert.ToUInt32(!seatbeltState);
+
+            mask = mask << 1;
+            mask = mask | Convert.ToUInt32(fuelLevelState);
+
+            mask = mask << 1;
+
+            CANManager.SetInfo(mask, speed);
         }
 
         // Engine temperature button clicked event handler //
         private void EngineTemperatureClicked(object sender, RoutedEventArgs e) {
             engineTempState = !engineTempState;
             engineTemperature.Source = (!engineTempState) ? engineTemperatureNormal : engineTemperatureWarning;
+            CalculateMaskAndSpeed();
         }
 
         // Battery level clicked event handler //
         private void BatteryLevelClicked(object sender, RoutedEventArgs e) {
             batteryLevelState = !batteryLevelState;
             batteryLevel.Source = (!batteryLevelState) ? batteryLevelNormal : batteryLevelWarning;
+            CalculateMaskAndSpeed();
         }
 
         // Window closed event handler //
@@ -114,6 +167,8 @@ namespace Cluster {
             } else {
                 currentBlinker = -1; // set the current blinker to none
             }
+
+            CalculateMaskAndSpeed();
         }
 
         // Turn right button event handler //
@@ -123,6 +178,8 @@ namespace Cluster {
             } else {
                 currentBlinker = -1; // set the current blinker to none
             }
+
+            CalculateMaskAndSpeed();
         }
 
         // Seatbet button event handler //
@@ -130,12 +187,16 @@ namespace Cluster {
             seatbelt.Source = (seatbeltState) ? seatbeltUnbuckled : seatbeltBuckled;
             seatbeltButton.Content = (seatbeltState) ? " Seatbelt:\nUnbuckled" : "Seatbelt:\n Buckled";
             seatbeltState = !seatbeltState;
+
+            CalculateMaskAndSpeed();
         }
 
         // Slider value changed event handler //
         private void ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
             speedLabel.Content = $"{(int)speedSlider.Value} km/h";
             RotateArrow((int)speedSlider.Value);
+
+            CalculateMaskAndSpeed();
         }
 
         // Headlights button event handler //
@@ -143,6 +204,8 @@ namespace Cluster {
             bulbLeft.Source = (headlightsState) ? headligtsOff : headlightsOn;
             headlightsState = !headlightsState;
             headlightsButton.Content = (headlightsState) ? "Headlights: On" : "Headlights: Off";
+
+            CalculateMaskAndSpeed();
         }
 
         // Rotates speedometer dial by a certain degree //
@@ -158,13 +221,17 @@ namespace Cluster {
                     if (currentBlinker == 0) {
                         blinkLeft.Source = turnLightLeftGreen;
                         blinkRight.Source = turnLightRight;
+                        blinkerState = 1;
                     } else if (currentBlinker == 1) {
                         blinkLeft.Source = turnLightLeft;
                         blinkRight.Source = turnLightRightGreen;
+                        blinkerState = 1;
                     } else {
                         blinkLeft.Source = turnLightLeft;
                         blinkRight.Source = turnLightRight;
+                        blinkerState = 0;
                     }
+                    CalculateMaskAndSpeed();
                 });
 
                 Thread.Sleep(blinkDelay);
@@ -172,9 +239,12 @@ namespace Cluster {
                 this.Dispatcher.Invoke(() => {
                     blinkLeft.Source = turnLightLeft;
                     blinkRight.Source = turnLightRight;
+                    blinkerState = 0;
+                    CalculateMaskAndSpeed();
                 });
 
                 Thread.Sleep(blinkDelay);
+
             }
         }
     }

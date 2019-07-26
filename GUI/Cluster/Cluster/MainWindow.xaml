@@ -38,8 +38,8 @@
         </Slider>
 
         <!-- Images -->
-        <Image x:Name="bulbLeft" HorizontalAlignment="Left" Height="42" Margin="444,261,0,0" VerticalAlignment="Top" Width="42" Source="C:/Resources/2.png"/>
-        <Image x:Name="seatbelt" HorizontalAlignment="Left" Height="30" Margin="414,266,0,0" VerticalAlignment="Top" Width="28" Source="C:/Resources/seatbelt_unbuckled.png"/>
+        <Image x:Name="bulbLeft" HorizontalAlignment="Left" Height="42" Margin="444,261,0,0" VerticalAlignment="Top" Width="42" Source="/Resources/2.png"/>
+        <Image x:Name="seatbelt" HorizontalAlignment="Left" Height="30" Margin="414,266,0,0" VerticalAlignment="Top" Width="28" Source="/Resources/seatbelt_unbuckled.png"/>
         <Image x:Name="speedometer_bg" HorizontalAlignment="Left" Height="356" Margin="267,12,0,0" VerticalAlignment="Top" Width="356" Source="Resources/speedometer_bg.png">
             <Image.DataContext>
                 <Properties:Resources/>
@@ -47,7 +47,7 @@
         </Image>
         <Image x:Name="speedometer_arrow" RenderTransformOrigin=".5,.95" HorizontalAlignment="Left" Height="112" Margin="432,112,0,0" VerticalAlignment="Top" Width="26" Source="Resources/speedometer_arrow.png"/>
         <Image x:Name="blinkLeft" HorizontalAlignment="Left" Height="36" Margin="304,332,0,0" VerticalAlignment="Top" Width="38" Source="Resources/turn_light_left.png"/>
-        <Image x:Name="blinkRight" HorizontalAlignment="Left" Height="36" Margin="551,333,0,0" VerticalAlignment="Top" Width="34" Source="C:/Resources/turn_light_right.png" RenderTransformOrigin="0.5,0.5">
+        <Image x:Name="blinkRight" HorizontalAlignment="Left" Height="36" Margin="551,333,0,0" VerticalAlignment="Top" Width="34" Source="/Resources/turn_light_right.png" RenderTransformOrigin="0.5,0.5">
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="-1"/>
