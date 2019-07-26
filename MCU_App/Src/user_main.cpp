@@ -31,12 +31,15 @@ class DataHandler{
 
 	private:
 		uint16_t ledPins[8];
-		uint8_t speed;
+		uint16_t stepsToGoal;
+		float oldSpeed;
+		float speed;
 		uint8_t inputData[8];
 		uint8_t messageId;
 		uint32_t oldTime;
 		bool ledStates[8];
 		void GetLedStates();
+		void GetSpeed();
 };
 
 DataHandler dataHandler;
@@ -49,21 +52,15 @@ void user_main()
 
 }
 
-int j = 0;
 void interrupt(){
-	//HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_10);
-	if(j%3 == 0){
-		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET);
-	}
-	else{
-		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);
-	}
-	j++;
-		dataHandler.SetSpeedometer();
+	dataHandler.SetSpeedometer();
 }
 
 DataHandler::DataHandler(){
 	this->messageId = 0;
+	this->oldSpeed = 0;
+	this->speed = 0;
+	this->oldSpeed = 0;
 	this->oldTime = HAL_GetTick();
 	this->ledPins[0] = GPIO_PIN_0;
 	this->ledPins[1] = GPIO_PIN_1;
@@ -120,7 +117,48 @@ void DataHandler::GetLedStates(){
 	}
 }
 
-void DataHandler::SetSpeedometer(){
+float map(float x, float in_min, float in_max, float out_min, float out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
+void DataHandler::GetSpeed(){
+	this->speed = (int)map(this->inputData[0], 0, 250, 0, 310);
+}
+
+int j = 0;
+void DataHandler::SetSpeedometer(){
+	if(this->messageId == 10){
+		this->GetSpeed();
+	}
+
+	int stepsToGoal = (int)((this->speed - this->oldSpeed) / 0.5);
+	if(stepsToGoal < 0){
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
+	}
+	else{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET);
+	}
+	int rotationSpeed = 2;
+	if(stepsToGoal == 0){
+		return;
+	}
+	else{
+		rotationSpeed = (int)(1/(float)stepsToGoal)*100 + 3;
+	}
+
+	if(j%rotationSpeed == 0){
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
+		if(stepsToGoal > 0){
+			this->oldSpeed+=0.5;
+		}
+		else{
+			this->oldSpeed-=0.5;
+		}
+	}
+	else{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
+	}
+	j++;
 
 }
