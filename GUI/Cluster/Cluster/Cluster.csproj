@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{79A333A0-694B-4457-BF83-A56C4F45CA68}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Cluster</RootNamespace>
     <AssemblyName>Cluster</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -34,9 +34,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -45,6 +49,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="vxlapi_NET">
+      <HintPath>..\..\..\..\..\Users\Public\Documents\Vector XL Driver Library\bin\vxlapi_NET.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -63,6 +70,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CANManager.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -94,8 +102,69 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Content Include="Resources\1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\battery_level.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\battery_level_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\engine_check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\engine_check_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\engine_temp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\engine_temp_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\fuel_level.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\fuel_level_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\horn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\horn_yellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\seatbelt_buckled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\seatbelt_unbuckled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\speedometer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\speedometer_arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\speedometer_bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\turn_light_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\turn_light_left_green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\turn_light_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\turn_light_right_green.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
