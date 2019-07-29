@@ -59,6 +59,7 @@ void interrupt(){
 DataHandler::DataHandler(){
 	this->messageId = 0;
 	this->oldSpeed = 0;
+	this->stepsToGoal = 0;
 	this->speed = 0;
 	this->oldSpeed = 0;
 	this->oldTime = HAL_GetTick();
@@ -144,7 +145,7 @@ void DataHandler::SetSpeedometer(){
 		return;
 	}
 	else{
-		rotationSpeed = (int)(1/(float)stepsToGoal)*100 + 3;
+		rotationSpeed = (int)(1/(float)stepsToGoal)*1000 + 2;
 	}
 
 	if(j%rotationSpeed == 0){

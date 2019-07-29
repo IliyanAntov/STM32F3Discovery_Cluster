@@ -5,6 +5,8 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Src/CANSPI.c \
+../Src/ILI9341_GFX.c \
+../Src/ILI9341_STM32_Driver.c \
 ../Src/MCP2515.c \
 ../Src/main.c \
 ../Src/stm32f3xx_hal_msp.c \
@@ -17,6 +19,8 @@ CPP_SRCS += \
 
 OBJS += \
 ./Src/CANSPI.o \
+./Src/ILI9341_GFX.o \
+./Src/ILI9341_STM32_Driver.o \
 ./Src/MCP2515.o \
 ./Src/main.o \
 ./Src/stm32f3xx_hal_msp.o \
@@ -27,6 +31,8 @@ OBJS += \
 
 C_DEPS += \
 ./Src/CANSPI.d \
+./Src/ILI9341_GFX.d \
+./Src/ILI9341_STM32_Driver.d \
 ./Src/MCP2515.d \
 ./Src/main.d \
 ./Src/stm32f3xx_hal_msp.d \

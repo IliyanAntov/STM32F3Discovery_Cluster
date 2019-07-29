@@ -15,6 +15,8 @@
 "Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim.o"
 "Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim_ex.o"
 "Src/CANSPI.o"
+"Src/ILI9341_GFX.o"
+"Src/ILI9341_STM32_Driver.o"
 "Src/MCP2515.o"
 "Src/main.o"
 "Src/stm32f3xx_hal_msp.o"
