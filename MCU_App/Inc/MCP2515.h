@@ -1,7 +1,7 @@
 #ifndef __MCP2515_H
 #define	__MCP2515_H
 
-#pragma anon_unions
+//#pragma anon_unions
 #include "stm32f3xx_hal.h"
 
 /* MCP2515 SPI Instruction Set */

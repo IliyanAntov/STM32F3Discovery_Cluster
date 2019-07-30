@@ -32,9 +32,10 @@ Src/main.o: ../Src/main.c \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f303xc.h \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/CANSPI.h \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/MCP2515.h \
- D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/CANSPI.h \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/ILI9341_STM32_Driver.h \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/ILI9341_GFX.h \
+ D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/CANSPI.h \
+ D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/ILI9341_STM32_Driver.h \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/ILI9341_GFX.h \
  D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/snow_tiger.h
 
@@ -104,11 +105,13 @@ D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/CANSPI.h:
 
 D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/MCP2515.h:
 
-D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/CANSPI.h:
-
 D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/ILI9341_STM32_Driver.h:
 
 D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/ILI9341_GFX.h:
+
+D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/CANSPI.h:
+
+D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/ILI9341_STM32_Driver.h:
 
 D:/Programs/STM32/Workspace/STM32F3Discovery_Cluster/MCU_App/Inc/ILI9341_GFX.h:
 

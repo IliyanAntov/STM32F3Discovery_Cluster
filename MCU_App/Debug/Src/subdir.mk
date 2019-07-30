@@ -15,6 +15,8 @@ C_SRCS += \
 ../Src/system_stm32f3xx.c 
 
 CPP_SRCS += \
+../Src/can.cpp \
+../Src/data.cpp \
 ../Src/user_main.cpp 
 
 OBJS += \
@@ -22,6 +24,8 @@ OBJS += \
 ./Src/ILI9341_GFX.o \
 ./Src/ILI9341_STM32_Driver.o \
 ./Src/MCP2515.o \
+./Src/can.o \
+./Src/data.o \
 ./Src/main.o \
 ./Src/stm32f3xx_hal_msp.o \
 ./Src/stm32f3xx_it.o \
@@ -41,6 +45,8 @@ C_DEPS += \
 ./Src/system_stm32f3xx.d 
 
 CPP_DEPS += \
+./Src/can.d \
+./Src/data.d \
 ./Src/user_main.d 
 
 

@@ -106,9 +106,7 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  CANSPI_Initialize();
-  HAL_TIM_Base_Start_IT(&htim3);
-  ILI9341_Init();
+  user_setup();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -119,7 +117,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  user_main();
+	  user_loop();
   }
   /* USER CODE END 3 */
 }

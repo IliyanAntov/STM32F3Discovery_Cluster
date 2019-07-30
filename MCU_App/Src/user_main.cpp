@@ -1,63 +1,82 @@
 #include <user_main.h>
+#include <data.h>
+
+#include <stm32f3xx_hal.h>
+#include <CANSPI.h>
+
+#include <ILI9341_STM32_Driver.h>
+#include <ILI9341_GFX.h>
+
+#include <snow_tiger.h>
 
 extern SPI_HandleTypeDef hspi1;
-
+extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim3;
 /*
-<Protocol>
-[b0][b1][b2][b3][b4][b5][b6][b7]
+ <Protocol>
+ [b0][b1][b2][b3][b4][b5][b6][b7]
 
-[b0]:	LEDs state
-	[0]: Left blinker LED (0 == off / 1 == on)
-	[1]: Right blinker LED (0 == off / 1 == on)
-	[2]: Engine cooling system LED (0 == off / 1 == on)
-	[3]: Battery LED (0 == off / 1 == on)
-	[4]: Headlights high beam LED (0 == off / 1 == on)
-	[5]: Headlights low beam LED (0 == off / 1 == on)
-	[6]: Battery LED (0 == off / 1 == on)
-	[7]: Seatbelt LED (0 == off / 1 == on)
-[b1]: Speed
-[b2]: Horn
+ [b0]:	LEDs state
+ [0]: Left blinker LED (0 == off / 1 == on)
+ [1]: Right blinker LED (0 == off / 1 == on)
+ [2]: Engine cooling system LED (0 == off / 1 == on)
+ [3]: Battery LED (0 == off / 1 == on)
+ [4]: Headlights high beam LED (0 == off / 1 == on)
+ [5]: Headlights low beam LED (0 == off / 1 == on)
+ [6]: Battery LED (0 == off / 1 == on)
+ [7]: Seatbelt LED (0 == off / 1 == on)
+ [b1]: Speed
+ [b2]: Horn
  */
 
 #define speedometerDirectionPin GPIO_PIN_0
 #define speedometerPulsePin GPIO_PIN_1
 
-class DataHandler{
-	public:
-		DataHandler();
-		void ReadInput();
-		void LightLeds();
-		void SetSpeedometer();
+class DataHandler {
+public:
+	DataHandler();
+	void ReadInput();
+	void LightLeds();
+	void SetSpeedometer();
 
-	private:
-		uint16_t ledPins[8];
-		uint16_t stepsToGoal;
-		float oldSpeed;
-		float speed;
-		uint8_t inputData[8];
-		uint8_t messageId;
-		uint32_t oldTime;
-		bool ledStates[8];
-		void GetLedStates();
-		void GetSpeed();
+private:
+	uint16_t ledPins[8];
+	uint16_t stepsToGoal;
+	float oldSpeed;
+	float speed;
+	uint8_t inputData[8];
+	uint8_t messageId;
+	uint32_t oldTime;
+	bool ledStates[8];
+	void GetLedStates();
+	void GetSpeed();
 };
 
 DataHandler dataHandler;
 
-void user_main()
-{
+void user_setup(){
+	CANSPI_Initialize();
+	HAL_TIM_Base_Start_IT(&htim3);
+	ILI9341_Init();
+	Data* data = Data::getInstance();
+	data->Read(data->eLed0);
+}
+
+void user_loop() {
+	//Data data;
+	//printf("%d", data.led0);
+
 	//DataHandler dataHandler;
 	dataHandler.ReadInput();
 	dataHandler.LightLeds();
 
-
 }
 
-void interrupt(){
+void interrupt() {
 	dataHandler.SetSpeedometer();
 }
 
-DataHandler::DataHandler(){
+DataHandler::DataHandler() {
 	this->messageId = 0;
 	this->oldSpeed = 0;
 	this->stepsToGoal = 0;
@@ -74,14 +93,14 @@ DataHandler::DataHandler(){
 	this->ledPins[7] = GPIO_PIN_7;
 }
 
-void DataHandler::ReadInput(){
+void DataHandler::ReadInput() {
 	uCAN_MSG rxMessage;
-	if(CANSPI_Receive(&rxMessage))
-	{
+	if (CANSPI_Receive(&rxMessage)) {
 		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);
 
 		this->messageId = rxMessage.frame.id;
-		if(this->messageId == 10 || this->messageId == 20 || this->messageId == 30){
+		if (this->messageId == 10 || this->messageId == 20
+				|| this->messageId == 30) {
 			this->inputData[0] = rxMessage.frame.data0;
 			this->inputData[1] = rxMessage.frame.data1;
 			this->inputData[2] = rxMessage.frame.data2;
@@ -97,68 +116,62 @@ void DataHandler::ReadInput(){
 
 }
 
-void DataHandler::LightLeds(){
-	if(this->messageId == 30){
+void DataHandler::LightLeds() {
+	if (this->messageId == 30) {
 		this->GetLedStates();
 	}
-	for(int i = 0; i < 8; i++){
-		if(this->ledStates[i]){
+	for (int i = 0; i < 8; i++) {
+		if (this->ledStates[i]) {
 			HAL_GPIO_WritePin(GPIOD, this->ledPins[i], GPIO_PIN_SET);
-		}
-		else{
+		} else {
 			HAL_GPIO_WritePin(GPIOD, this->ledPins[i], GPIO_PIN_RESET);
 		}
 	}
 }
 
-void DataHandler::GetLedStates(){
+void DataHandler::GetLedStates() {
 	uint8_t input = this->inputData[0];
-	for(int i = 0; i < 8; i++){
+	for (int i = 0; i < 8; i++) {
 		this->ledStates[i] = (input & 1);
 		input = input >> 1;
 	}
 }
 
-float map(float x, float in_min, float in_max, float out_min, float out_max)
-{
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+float map(float x, float in_min, float in_max, float out_min, float out_max) {
+	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-void DataHandler::GetSpeed(){
-	this->speed = (int)map(this->inputData[0], 0, 250, 0, 310);
+void DataHandler::GetSpeed() {
+	this->speed = (int) map(this->inputData[0], 0, 250, 0, 310);
 }
 
 int j = 0;
-void DataHandler::SetSpeedometer(){
-	if(this->messageId == 10){
+void DataHandler::SetSpeedometer() {
+	if (this->messageId == 10) {
 		this->GetSpeed();
 	}
 
-	int stepsToGoal = (int)((this->speed - this->oldSpeed) / 0.5);
-	if(stepsToGoal < 0){
+	int stepsToGoal = (int) ((this->speed - this->oldSpeed) / 0.5);
+	if (stepsToGoal < 0) {
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
-	}
-	else{
+	} else {
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET);
 	}
 	int rotationSpeed = 2;
-	if(stepsToGoal == 0){
+	if (stepsToGoal == 0) {
 		return;
-	}
-	else{
-		rotationSpeed = (int)(1/(float)stepsToGoal)*1000 + 2;
+	} else {
+		rotationSpeed = (int) (1 / (float) stepsToGoal) * 1000 + 2;
 	}
 
-	if(j%rotationSpeed == 0){
+	if (j % rotationSpeed == 0) {
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
-		if(stepsToGoal > 0){
-			this->oldSpeed+=0.5;
+		if (stepsToGoal > 0) {
+			this->oldSpeed += 0.5;
+		} else {
+			this->oldSpeed -= 0.5;
 		}
-		else{
-			this->oldSpeed-=0.5;
-		}
-	}
-	else{
+	} else {
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
 	}
 	j++;
