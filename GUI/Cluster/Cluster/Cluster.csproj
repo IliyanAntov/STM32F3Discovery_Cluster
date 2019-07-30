@@ -137,6 +137,7 @@
     <Content Include="Resources\horn.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\horn_button.png" />
     <Content Include="Resources\horn_yellow.png" />
   </ItemGroup>
   <ItemGroup>
