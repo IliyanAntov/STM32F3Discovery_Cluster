@@ -21,6 +21,7 @@
         <Button x:Name="batteryLevelButton" Content="Battery Level" Margin="10,236,609,138" FontSize="18"/>
         <Button x:Name="engineTemperatureButton" Content="Engine Temp" HorizontalContentAlignment="Center" Margin="10,300,609,74" FontSize="18"/>
         <Button x:Name="fuelLevelButton" Content="Fuel Level" Margin="10,364,609,10" FontSize="18"/>
+        <Button Name="hornButton" Content="Horn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="142" Margin="638,150,0,0" Height="43" FontSize="18" Grid.ColumnSpan="2"/>
 
         <!-- Labels -->
         <Label x:Name="speedLabel"  Content="0 km/h" FontSize="18" Margin="662,364,12,11" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2"/>
@@ -60,5 +61,6 @@
         <Image x:Name="batteryLevel" HorizontalAlignment="Left" Height="36" Margin="380,310,0,0" VerticalAlignment="Top" Width="37" Source="Resources/battery_level.png"/>
         <Image x:Name="engineTemperature" HorizontalAlignment="Left" Height="36" Margin="427,304,0,0" VerticalAlignment="Top" Width="36" Source="Resources/engine_temp.png"/>
         <Image x:Name="fuelLevel" HorizontalAlignment="Left" Height="32" Margin="477,307,0,0" VerticalAlignment="Top" Width="32" Source="Resources/fuel_level.png"/>
+        <Image Name="horn" Grid.ColumnSpan="2" HorizontalAlignment="Left" RenderTransformOrigin="-1.75,-1.75" Height="100" Margin="662,32,0,0" VerticalAlignment="Top" Width="100" Source="Resources/horn_button.png"/>
     </Grid>
 </Window>
