@@ -54,7 +54,7 @@
 
 #define DC_Pin GPIO_PIN_1
 #define CS_Pin GPIO_PIN_3
-#define RST_Pin GPIO_PIN_4
+#define RST_Pin GPIO_PIN_5
 
 void ILI9341_Draw_Hollow_Circle(uint16_t X, uint16_t Y, uint16_t Radius, uint16_t Colour);
 void ILI9341_Draw_Filled_Circle(uint16_t X, uint16_t Y, uint16_t Radius, uint16_t Colour);

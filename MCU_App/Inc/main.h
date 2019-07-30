@@ -68,6 +68,10 @@ void Error_Handler(void);
 #define Display_CS_GPIO_Port GPIOA
 #define CAN_CS_Pin GPIO_PIN_4
 #define CAN_CS_GPIO_Port GPIOA
+#define Display_Reset_Pin GPIO_PIN_5
+#define Display_Reset_GPIO_Port GPIOC
+#define Blinker_Sound_Pin GPIO_PIN_7
+#define Blinker_Sound_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
