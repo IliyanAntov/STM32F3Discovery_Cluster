@@ -3,6 +3,8 @@
 
 #include <stm32f3xx_hal.h>
 #include <CANSPI.h>
+#include <can.h>
+#include <blinker_sound.h>
 
 #include <ILI9341_STM32_Driver.h>
 #include <ILI9341_GFX.h>
@@ -11,7 +13,9 @@
 
 extern SPI_HandleTypeDef hspi1;
 extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim4;
 /*
  <Protocol>
  [b0][b1][b2][b3][b4][b5][b6][b7]
@@ -38,16 +42,16 @@ public:
 	void ReadInput();
 	void LightLeds();
 	void SetSpeedometer();
+	bool ledStates[8];
 
 private:
-	uint16_t ledPins[8];
 	uint16_t stepsToGoal;
+	uint16_t ledPins[8];
 	float oldSpeed;
 	float speed;
 	uint8_t inputData[8];
 	uint8_t messageId;
 	uint32_t oldTime;
-	bool ledStates[8];
 	void GetLedStates();
 	void GetSpeed();
 };
@@ -55,11 +59,14 @@ private:
 DataHandler dataHandler;
 
 void user_setup(){
+	Can* can = Can::getInstance();
+	//can->Initialize();
 	CANSPI_Initialize();
+	HAL_TIM_Base_Start_IT(&htim2);
 	HAL_TIM_Base_Start_IT(&htim3);
+	HAL_TIM_Base_Start_IT(&htim4);
+	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
 	ILI9341_Init();
-	Data* data = Data::getInstance();
-	data->Read(data->eLed0);
 }
 
 void user_loop() {
@@ -72,8 +79,44 @@ void user_loop() {
 
 }
 
-void interrupt() {
+void interrupt()
+{
 	dataHandler.SetSpeedometer();
+}
+
+bool prevBlinker1 = dataHandler.ledStates[6];
+bool prevBlinker2 = dataHandler.ledStates[7];
+
+int f = 0;
+float g = 0;
+void BlinkerInterrupt()
+{
+	BlinkerSound::InterruptCall();
+}
+
+void tickHigh()
+{
+	int prevF = f;
+	while(f - prevF < 4){
+		if(f%2 == 0){
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_SET);
+		}
+		else{
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);
+		}
+	}
+}
+
+void tickLow(){
+	int prevF = f;
+	while(f - prevF < 4){
+			if(f%2 == 0){
+				HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_SET);
+			}
+			else{
+				HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);
+			}
+		}
 }
 
 DataHandler::DataHandler() {
@@ -112,6 +155,19 @@ void DataHandler::ReadInput() {
 		}
 
 		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET);
+	}
+	if(		(dataHandler.ledStates[6] != prevBlinker1 && prevBlinker1 == 0) ||
+			(dataHandler.ledStates[7] != prevBlinker2 && prevBlinker2 == 0)){
+		BlinkerSound::BlinkerOnSound();
+		prevBlinker1 = dataHandler.ledStates[6];
+		prevBlinker2 = dataHandler.ledStates[7];
+	}
+	else if ((dataHandler.ledStates[6] != prevBlinker1 && prevBlinker1 == 1) ||
+			(dataHandler.ledStates[7] != prevBlinker2 && prevBlinker2 == 1)){
+		BlinkerSound::BlinkerOffSound();
+		prevBlinker1 = dataHandler.ledStates[6];
+		prevBlinker2 = dataHandler.ledStates[7];
+
 	}
 
 }

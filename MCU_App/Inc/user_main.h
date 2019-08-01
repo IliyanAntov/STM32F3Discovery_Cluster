@@ -22,6 +22,7 @@
 	void user_setup();
 	void user_loop();
 	void interrupt();
+	void BlinkerInterrupt();
 
 	#ifdef __cplusplus
 	};

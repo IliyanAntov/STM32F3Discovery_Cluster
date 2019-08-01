@@ -6,17 +6,24 @@
  */
 
 #include "can.h"
-#include <CANSPI.h>
+#include "CANSPI.h"
 #include "data.h"
 
-Can::Can() {
-	// TODO Auto-generated constructor stub
+Can* Can::instance = 0;
 
+Can::Can() { }
+
+Can* Can::getInstance(){
+	if(instance == 0){
+		instance = new Can();
+	}
+	return instance;
 }
 
 void Can::Initialize(){
 	CANSPI_Initialize();
 }
+
 
 void Can::ReadInput(){
 	uCAN_MSG rxMessage;
@@ -38,18 +45,18 @@ void Can::ReadInput(){
 
 }
 
-void SetSpeed(Data* dataClass, uint8_t newValue){
+void Can::SetSpeed(Data* dataClass, uint8_t newValue){
 	dataClass->Write(dataClass->eMotorSpeed, newValue);
 }
 
-void SetLEDs(Data* dataClass, uint8_t newValue){
-	for (int i = 0; i < 8; i++) {
+void Can::SetLEDs(Data* dataClass, uint8_t newValue){
+	for (int i = 0; i < 7; i++) {
 		dataClass->Write((Data::Signals)i, (newValue & 1));
 		newValue = newValue >> 1;
 	}
 }
 
-void SetHorn(Data* dataClass, uint8_t newValue){
+void Can::SetHorn(Data* dataClass, uint8_t newValue){
 	//TODO
 }
 

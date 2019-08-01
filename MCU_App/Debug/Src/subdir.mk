@@ -15,6 +15,7 @@ C_SRCS += \
 ../Src/system_stm32f3xx.c 
 
 CPP_SRCS += \
+../Src/blinker_sound.cpp \
 ../Src/can.cpp \
 ../Src/data.cpp \
 ../Src/user_main.cpp 
@@ -24,6 +25,7 @@ OBJS += \
 ./Src/ILI9341_GFX.o \
 ./Src/ILI9341_STM32_Driver.o \
 ./Src/MCP2515.o \
+./Src/blinker_sound.o \
 ./Src/can.o \
 ./Src/data.o \
 ./Src/main.o \
@@ -45,6 +47,7 @@ C_DEPS += \
 ./Src/system_stm32f3xx.d 
 
 CPP_DEPS += \
+./Src/blinker_sound.d \
 ./Src/can.d \
 ./Src/data.d \
 ./Src/user_main.d 

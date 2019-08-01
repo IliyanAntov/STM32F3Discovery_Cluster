@@ -18,6 +18,7 @@
 "Src/ILI9341_GFX.o"
 "Src/ILI9341_STM32_Driver.o"
 "Src/MCP2515.o"
+"Src/blinker_sound.o"
 "Src/can.o"
 "Src/data.o"
 "Src/main.o"
