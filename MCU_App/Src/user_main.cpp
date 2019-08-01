@@ -12,10 +12,10 @@
 #include <snow_tiger.h>
 
 extern SPI_HandleTypeDef hspi1;
-extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim7;
 /*
  <Protocol>
  [b0][b1][b2][b3][b4][b5][b6][b7]
@@ -41,10 +41,13 @@ public:
 	DataHandler();
 	void ReadInput();
 	void LightLeds();
+	void UpdateDisplay();
 	void SetSpeedometer();
 	bool ledStates[8];
 
 private:
+	int hour;
+	int min;
 	uint16_t stepsToGoal;
 	uint16_t ledPins[8];
 	float oldSpeed;
@@ -59,14 +62,17 @@ private:
 DataHandler dataHandler;
 
 void user_setup(){
-	Can* can = Can::getInstance();
+	//Can* can = Can::getInstance();
 	//can->Initialize();
 	CANSPI_Initialize();
 	HAL_TIM_Base_Start_IT(&htim2);
 	HAL_TIM_Base_Start_IT(&htim3);
 	HAL_TIM_Base_Start_IT(&htim4);
+	HAL_TIM_Base_Start_IT(&htim7);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-	ILI9341_Init();
+	//ILI9341_Init();
+	//ILI9341_Fill_Screen(WHITE);
+
 }
 
 void user_loop() {
@@ -82,6 +88,10 @@ void user_loop() {
 void interrupt()
 {
 	dataHandler.SetSpeedometer();
+}
+
+void DisplayInterrupt(){
+	//dataHandler.UpdateDisplay();
 }
 
 bool prevBlinker1 = dataHandler.ledStates[6];
@@ -125,6 +135,8 @@ DataHandler::DataHandler() {
 	this->stepsToGoal = 0;
 	this->speed = 0;
 	this->oldSpeed = 0;
+	hour = 0;
+	min = 0;
 	this->oldTime = HAL_GetTick();
 	this->ledPins[0] = GPIO_PIN_0;
 	this->ledPins[1] = GPIO_PIN_1;
@@ -136,6 +148,14 @@ DataHandler::DataHandler() {
 	this->ledPins[7] = GPIO_PIN_7;
 }
 
+void DataHandler::UpdateDisplay(){
+
+	char HeadingText[20] = { "Current time:"};
+	char Time[10];
+	sprintf(Time, "%d : %d", hour, min);
+	ILI9341_Draw_Text(HeadingText, 10, 10, BLACK, 2, WHITE);
+	ILI9341_Draw_Text(Time, 10, 30, BLACK, 2, WHITE);
+}
 void DataHandler::ReadInput() {
 	uCAN_MSG rxMessage;
 	if (CANSPI_Receive(&rxMessage)) {
@@ -168,6 +188,10 @@ void DataHandler::ReadInput() {
 		prevBlinker1 = dataHandler.ledStates[6];
 		prevBlinker2 = dataHandler.ledStates[7];
 
+	}
+	if(messageId == 40){
+		this->hour = inputData[0];
+		this->min = inputData[1];
 	}
 
 }

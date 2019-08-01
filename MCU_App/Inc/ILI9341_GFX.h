@@ -49,8 +49,8 @@
 
 #include "stm32f3xx_hal.h"
 
-#define HORIZONTAL_IMAGE	0
-#define VERTICAL_IMAGE		1
+#define HORIZONTAL_IMAGE 0
+#define VERTICAL_IMAGE 1
 
 #define DC_Pin GPIO_PIN_1
 #define CS_Pin GPIO_PIN_3
