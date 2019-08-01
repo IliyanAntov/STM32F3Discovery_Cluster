@@ -9,7 +9,7 @@ namespace Cluster
     public class CANManager
     {
         private static XLDriver CANDriver = new XLDriver();
-        private static String appName = "xlCANdemoNET";
+        private static String appName = "CAN";
 
         // Driver configuration
         private static XLClass.xl_driver_config driverConfig = new XLClass.xl_driver_config();
