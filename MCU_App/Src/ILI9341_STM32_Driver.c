@@ -87,7 +87,7 @@
 /* Global Variables ------------------------------------------------------------------*/
 volatile uint16_t LCD_HEIGHT = ILI9341_SCREEN_HEIGHT;
 volatile uint16_t LCD_WIDTH	 = ILI9341_SCREEN_WIDTH;
-SPI_HandleTypeDef hspi1;
+SPI_HandleTypeDef hspi2;
 
 /* Initialize SPI */
 void ILI9341_SPI_Init(void)

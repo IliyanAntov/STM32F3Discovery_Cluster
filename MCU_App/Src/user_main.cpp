@@ -64,14 +64,19 @@ DataHandler dataHandler;
 void user_setup(){
 	//Can* can = Can::getInstance();
 	//can->Initialize();
+	NVIC_DisableIRQ(TIM7_IRQn);
+	HAL_Delay(100);
 	CANSPI_Initialize();
 	HAL_TIM_Base_Start_IT(&htim2);
 	HAL_TIM_Base_Start_IT(&htim3);
 	HAL_TIM_Base_Start_IT(&htim4);
 	HAL_TIM_Base_Start_IT(&htim7);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-	//ILI9341_Init();
-	//ILI9341_Fill_Screen(WHITE);
+	ILI9341_Init();
+	ILI9341_Fill_Screen(WHITE);
+	ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2);
+	HAL_Delay(1000);
+	NVIC_EnableIRQ(TIM7_IRQn);
 
 }
 
@@ -91,7 +96,7 @@ void interrupt()
 }
 
 void DisplayInterrupt(){
-	//dataHandler.UpdateDisplay();
+	dataHandler.UpdateDisplay();
 }
 
 bool prevBlinker1 = dataHandler.ledStates[6];
@@ -150,11 +155,9 @@ DataHandler::DataHandler() {
 
 void DataHandler::UpdateDisplay(){
 
-	char HeadingText[20] = { "Current time:"};
 	char Time[10];
-	sprintf(Time, "%d : %d", hour, min);
-	ILI9341_Draw_Text(HeadingText, 10, 10, BLACK, 2, WHITE);
-	ILI9341_Draw_Text(Time, 10, 30, BLACK, 2, WHITE);
+	sprintf(Time, "%d:%d", hour, min);
+	ILI9341_Draw_Text(Time, 40, 80, BLACK, 8, WHITE);
 }
 void DataHandler::ReadInput() {
 	uCAN_MSG rxMessage;
@@ -163,7 +166,7 @@ void DataHandler::ReadInput() {
 
 		this->messageId = rxMessage.frame.id;
 		if (this->messageId == 10 || this->messageId == 20
-				|| this->messageId == 30) {
+				|| this->messageId == 30 || this->messageId == 40) {
 			this->inputData[0] = rxMessage.frame.data0;
 			this->inputData[1] = rxMessage.frame.data1;
 			this->inputData[2] = rxMessage.frame.data2;

@@ -51,7 +51,7 @@
 #include "stm32f3xx_hal.h"
 #include "stm32f3xx_hal_gpio.h"
 
-SPI_HandleTypeDef hspi1;
+SPI_HandleTypeDef hspi2;
 
 /*Draw hollow circle at X,Y location with specified radius and colour. X and Y represent circles center */
 void ILI9341_Draw_Hollow_Circle(uint16_t X, uint16_t Y, uint16_t Radius, uint16_t Colour)
@@ -292,7 +292,7 @@ void ILI9341_Draw_Image(const char* Image_Array, uint8_t Orientation)
 				{
 					Temp_small_buffer[k]	= Image_Array[counter+k];		
 				}						
-				HAL_SPI_Transmit(&hspi1, (unsigned char*)Temp_small_buffer, BURST_MAX_SIZE, 10);
+				HAL_SPI_Transmit(&hspi2, (unsigned char*)Temp_small_buffer, BURST_MAX_SIZE, 10);
 				counter += BURST_MAX_SIZE;			
 		}
 		HAL_GPIO_WritePin(GPIOC, CS_Pin, GPIO_PIN_SET);
@@ -313,7 +313,7 @@ void ILI9341_Draw_Image(const char* Image_Array, uint8_t Orientation)
 				{
 					Temp_small_buffer[k]	= Image_Array[counter+k];		
 				}						
-				HAL_SPI_Transmit(&hspi1, (unsigned char*)Temp_small_buffer, BURST_MAX_SIZE, 10);
+				HAL_SPI_Transmit(&hspi2, (unsigned char*)Temp_small_buffer, BURST_MAX_SIZE, 10);
 				counter += BURST_MAX_SIZE;			
 		}
 		HAL_GPIO_WritePin(GPIOC, CS_Pin, GPIO_PIN_SET);
@@ -334,7 +334,7 @@ void ILI9341_Draw_Image(const char* Image_Array, uint8_t Orientation)
 				{
 					Temp_small_buffer[k]	= Image_Array[counter+k];		
 				}						
-				HAL_SPI_Transmit(&hspi1, (unsigned char*)Temp_small_buffer, BURST_MAX_SIZE, 10);
+				HAL_SPI_Transmit(&hspi2, (unsigned char*)Temp_small_buffer, BURST_MAX_SIZE, 10);
 				counter += BURST_MAX_SIZE;			
 		}
 		HAL_GPIO_WritePin(GPIOC, CS_Pin, GPIO_PIN_SET);
@@ -355,7 +355,7 @@ void ILI9341_Draw_Image(const char* Image_Array, uint8_t Orientation)
 				{
 					Temp_small_buffer[k]	= Image_Array[counter+k];		
 				}						
-				HAL_SPI_Transmit(&hspi1, (unsigned char*)Temp_small_buffer, BURST_MAX_SIZE, 10);
+				HAL_SPI_Transmit(&hspi2, (unsigned char*)Temp_small_buffer, BURST_MAX_SIZE, 10);
 				counter += BURST_MAX_SIZE;			
 		}
 		HAL_GPIO_WritePin(GPIOC, CS_Pin, GPIO_PIN_SET);
