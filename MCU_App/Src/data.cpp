@@ -1,5 +1,5 @@
 /*
- * Data.cpp
+ * data.cpp
  *
  *  Created on: Jul 30, 2019
  *      Author: SoMe0nE

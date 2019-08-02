@@ -11,6 +11,7 @@
 #include "stdint.h"
 #include "data.h"
 
+
 class Can {
 	public:
 		void Initialize();
