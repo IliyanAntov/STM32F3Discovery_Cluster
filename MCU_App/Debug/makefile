@@ -49,7 +49,7 @@ all: MCU_App.elf
 MCU_App.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU G++ Linker'
-	arm-none-eabi-g++ -mthumb -mfloat-abi=soft -T"" -Wl,-Map=output.map -Wl,--gc-sections -fno-exceptions -fno-rtti -o "MCU_App.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
+	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -specs=nosys.specs -specs=nano.specs -T"../STM32F303VCTx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -fno-exceptions -fno-rtti -o "MCU_App.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
@@ -60,8 +60,8 @@ clean:
 	-@echo ' '
 
 post-build:
-	-@echo 'Generating binary and Printing size information:'
-	arm-none-eabi-objcopy -O binary "MCU_App.elf" "MCU_App.bin"
+	-@echo 'Generating hex and Printing size information:'
+	arm-none-eabi-objcopy -O ihex "MCU_App.elf" "MCU_App.hex"
 	arm-none-eabi-size "MCU_App.elf"
 	-@echo ' '
 

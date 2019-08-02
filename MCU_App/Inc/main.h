@@ -62,7 +62,7 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define Stepper_direction_Pin GPIO_PIN_0
 #define Stepper_direction_GPIO_Port GPIOC
-#define Stepper_signal_Pin GPIO_PIN_2
+#define Stepper_signal_Pin GPIO_PIN_1
 #define Stepper_signal_GPIO_Port GPIOC
 #define Display_DC_Pin GPIO_PIN_1
 #define Display_DC_GPIO_Port GPIOA
