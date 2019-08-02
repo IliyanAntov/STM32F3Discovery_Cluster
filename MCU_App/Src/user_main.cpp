@@ -96,7 +96,7 @@ void interrupt()
 }
 
 void DisplayInterrupt(){
-	dataHandler.UpdateDisplay();
+	//dataHandler.UpdateDisplay();
 }
 
 bool prevBlinker1 = dataHandler.ledStates[6];
@@ -156,7 +156,18 @@ DataHandler::DataHandler() {
 void DataHandler::UpdateDisplay(){
 
 	char Time[10];
-	sprintf(Time, "%d:%d", hour, min);
+	if(hour < 10 && min < 10){
+		sprintf(Time, "0%d:0%d", hour, min);
+	}
+	else if(hour < 10 && min >= 10){
+		sprintf(Time, "0%d:%d", hour, min);
+	}
+	else if(hour >=10 && min < 10){
+		sprintf(Time, "%d:0%d", hour, min);
+	}
+	else{
+		sprintf(Time, "%d:%d", hour, min);
+	}
 	ILI9341_Draw_Text(Time, 40, 80, BLACK, 8, WHITE);
 }
 void DataHandler::ReadInput() {
@@ -192,9 +203,10 @@ void DataHandler::ReadInput() {
 		prevBlinker2 = dataHandler.ledStates[7];
 
 	}
-	if(messageId == 40){
+	if(messageId == 40 && inputData[1] != min){
 		this->hour = inputData[0];
 		this->min = inputData[1];
+		dataHandler.UpdateDisplay();
 	}
 
 }
@@ -248,14 +260,14 @@ void DataHandler::SetSpeedometer() {
 	}
 
 	if (j % rotationSpeed == 0) {
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
 		if (stepsToGoal > 0) {
 			this->oldSpeed += 0.5;
 		} else {
 			this->oldSpeed -= 0.5;
 		}
 	} else {
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
 	}
 	j++;
 

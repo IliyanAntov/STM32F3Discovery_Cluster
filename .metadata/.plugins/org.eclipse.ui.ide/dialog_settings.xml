@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="D:\Programs\STM32\Workspace\MCU_App"/>
+		<item value="D:\Programs\STM32\Workspace\STM32F3Discovery_Cluster\MCU_App"/>
+	</list>
+</section>
