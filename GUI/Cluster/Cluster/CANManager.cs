@@ -25,18 +25,16 @@ namespace Cluster
         private static UInt64 rxMask = 0;
         private static int txCi = -1;
         private static int rxCi = -1;
-        private static int message_id = 0;
         private static uint mask = 0;
         private static int speed = 0;
         private static int horn = 0;
+        private static int curr_time_hours = 0;
+        private static int curr_time_minutes = 0;
 
-        public CANManager(int id)
+        public CANManager()
         {
-            this.Message_Id = id;
             InitializeCAN();
         }
-
-        public int Message_Id { get { return message_id; } set { message_id = value; } }
 
         public void InitializeCAN()
         {
@@ -117,20 +115,22 @@ namespace Cluster
             SendInfo(mask, speed);
         }
 
-        public static void SetInfo(uint new_mask, int new_speed, int new_horn)
+        public static void SetInfo(uint new_mask, int new_speed, int new_horn, int curr_hour, int curr_min)
         {
             mask = new_mask;
             speed = new_speed;
             horn = new_horn;
+            curr_time_hours = curr_hour;
+            curr_time_minutes = curr_min;
         }
 
         public static void SendInfo(uint mask, int speed)
         {
             XLDefine.XL_Status txStatus;
 
-            xl_event_collection xlEventCollection = new xl_event_collection(3);
+            xl_event_collection xlEventCollection = new xl_event_collection(4);
 
-            xlEventCollection.xlEvent[0].tagData.can_Msg.id = (uint)message_id;
+            xlEventCollection.xlEvent[0].tagData.can_Msg.id = 30;
             xlEventCollection.xlEvent[0].tagData.can_Msg.dlc = 1;
             xlEventCollection.xlEvent[0].tagData.can_Msg.data[0] = (byte)mask;
             xlEventCollection.xlEvent[0].tag = XL_EventTags.XL_TRANSMIT_MSG;
@@ -145,6 +145,12 @@ namespace Cluster
             xlEventCollection.xlEvent[2].tagData.can_Msg.data[0] = (byte)horn;
             xlEventCollection.xlEvent[2].tag = XL_EventTags.XL_TRANSMIT_MSG;
 
+            xlEventCollection.xlEvent[3].tagData.can_Msg.id = 40;
+            xlEventCollection.xlEvent[3].tagData.can_Msg.dlc = 2;
+            xlEventCollection.xlEvent[3].tagData.can_Msg.data[0] = (byte)curr_time_hours;
+            xlEventCollection.xlEvent[3].tagData.can_Msg.data[1] = (byte)curr_time_minutes;
+            xlEventCollection.xlEvent[3].tag = XL_EventTags.XL_TRANSMIT_MSG;
+
             txStatus = CANDriver.XL_CanTransmit(portHandle, txMask, xlEventCollection);
         }
 
@@ -152,9 +158,9 @@ namespace Cluster
         {
             XLDefine.XL_Status txStatus;
 
-            xl_event_collection xlEventCollection = new xl_event_collection(3);
+            xl_event_collection xlEventCollection = new xl_event_collection(4);
 
-            xlEventCollection.xlEvent[0].tagData.can_Msg.id = (uint)message_id;
+            xlEventCollection.xlEvent[0].tagData.can_Msg.id = 30;
             xlEventCollection.xlEvent[0].tagData.can_Msg.dlc = 1;
             xlEventCollection.xlEvent[0].tagData.can_Msg.data[0] = 0;
             xlEventCollection.xlEvent[0].tag = XL_EventTags.XL_TRANSMIT_MSG;
@@ -168,6 +174,13 @@ namespace Cluster
             xlEventCollection.xlEvent[2].tagData.can_Msg.dlc = 1;
             xlEventCollection.xlEvent[2].tagData.can_Msg.data[0] = 0;
             xlEventCollection.xlEvent[2].tag = XL_EventTags.XL_TRANSMIT_MSG;
+
+            xlEventCollection.xlEvent[3].tagData.can_Msg.id = 40;
+            xlEventCollection.xlEvent[3].tagData.can_Msg.dlc = 2;
+            xlEventCollection.xlEvent[3].tagData.can_Msg.data[0] = 0;
+            xlEventCollection.xlEvent[3].tagData.can_Msg.data[1] = 0;
+            xlEventCollection.xlEvent[3].tag = XL_EventTags.XL_TRANSMIT_MSG;
+
 
             txStatus = CANDriver.XL_CanTransmit(portHandle, txMask, xlEventCollection);
         }

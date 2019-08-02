@@ -22,6 +22,7 @@ namespace Cluster {
         private bool fuelLevelState = false; // fuel level state - normal/warning
         private uint blinkerState = 0;
         private bool hornButtonState = false;
+        private string curr_time = DateTime.Now.ToString("HH:mm");
 
         // Global icon images //
         private BitmapImage headlightsOn; // headlights turned on
@@ -89,7 +90,7 @@ namespace Cluster {
             blink.Start();
 
             // Initialize the can manager //
-            can_manager = new CANManager(30);
+            can_manager = new CANManager();
 
             System.Timers.Timer timer = new System.Timers.Timer(200);
             timer.Elapsed += CANManager.TimerHandler;
@@ -162,7 +163,9 @@ namespace Cluster {
 
             mask = mask << 1;
 
-            CANManager.SetInfo(mask, speed, Convert.ToInt32(hornButtonState));
+            curr_time = DateTime.Now.ToString("HH:mm");
+
+            CANManager.SetInfo(mask, speed, Convert.ToInt32(hornButtonState), int.Parse(curr_time.Split(':')[0]), int.Parse(curr_time.Split(':')[1]));
         }
 
         /// <summary>
